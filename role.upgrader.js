@@ -1,7 +1,7 @@
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function(creep, n) {
 
         if (creep.carry.energy < creep.carryCapacity)
         {
@@ -11,7 +11,6 @@ var roleUpgrader = {
             );
 
             if (energy.length) {
-                console.log('found ' + energy[0].energy + ' energy at ', energy[0].pos);
                 creep.pickup(energy[0]);
             }
         }
@@ -26,19 +25,22 @@ var roleUpgrader = {
 	    }
 
 	    if(creep.memory.upgrading) {
+	        
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             }
-        }
-        else {
-            /*
-            var containers = creep.pos.findInRange(FIND_STRUCTURES, 1, 
-                {filter: {structureType: STRUCTURE_CONTAINER}});
-            containers[0].transfer(creep, RESOURCE_ENERGY);
-            */
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0+1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0+1]);
+            
+        } else {
+            
+            var sources = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (structure) => {
+                return ( ((structure.structureType == STRUCTURE_CONTAINER) && (structure.store[RESOURCE_ENERGY] > 100))
+                       ||((structure.structureType == STRUCTURE_STORAGE ) && (structure.store[RESOURCE_ENERGY] > 100))
+                )
+            }});
+            
+            if(creep.withdraw(sources, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources);
             }
         }
 	}

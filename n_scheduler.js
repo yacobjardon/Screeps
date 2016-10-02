@@ -21,6 +21,25 @@ module.exports = {
     run: function(){
         
         //Memory.rooms[];
+        
+        
+        var hostiles = Game.rooms.W6N51.find(FIND_HOSTILE_CREEPS);
+        
+        if(hostiles.length){
+            
+        } else {
+            
+        }
+
+        //defense
+        
         return;
     }
 };
+
+/*
+
+var targetRoomName = "E13S8";
+var targetPos = new RoomPosition(10,10, targetRoomName);
+Urist.moveTo(targetPos);
+*/

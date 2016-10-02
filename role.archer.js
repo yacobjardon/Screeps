@@ -1,28 +1,40 @@
-var roleHarvester = {
-
-    /** @param {Creep} creep **/
-    run: function(creep) {
-        if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+module.exports = {
+    run: function(creep, n){
+        
+        var target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        
+        if(target) {
+            if(creep.rangedMassAttack(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+                
+                //delete Memory.vars[n].path
             }
+            
+        } else {
+            
+            creep.moveTo(33, 23);
+            
         }
-        else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION ||
-                                structure.structureType == STRUCTURE_SPAWN ||
-                                structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
-                    }
-            });
-            if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+        
+        /* else if ((Memory.vars[n].path.length == 0) && (Memory.vars[n].drain != 0)) {
+            
+            target = Game.flags.F_W6N52_00;
+            
+            Memory.vars[n].path = creep.pos.findPathTo(target, {maxOps: 200});
+            
+                if( !Memory.vars[n].path.length || !target.equalsTo(path[path.length - 1]) ) {
+                    Memory.vars[n].path = creep.pos.findPathTo(target, {maxOps: 1000, ignoreDestructibleStructures: true});
                 }
+                
+            if( Memory.vars[n].path.length ) {
+                creep.move(Memory.vars[n].path[0].direction);
+                Memory.vars[n].path.splice(0,1);
             }
+            
+        } else if (Memory.vars[n].path.length > 0){
+            creep.move(Memory.vars[n].path[0].direction);
+            Memory.vars[n].path.splice(0,1);
         }
+        */
     }
 };
-
-module.exports = roleHarvester;

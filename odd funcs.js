@@ -16,3 +16,7 @@ Game.spawns.s1.canCreateCreep([WORK, CARRY, MOVE], 'c2')
 if(Game.spawns.s1.canCreateCreep([WORK, CARRY, MOVE], 'c1') == 0){
     Game.spawns.s1.createCreep( [WORK, CARRY, MOVE], 'c1' );
 }
+
+
+
+require('my_module').add_creep();
